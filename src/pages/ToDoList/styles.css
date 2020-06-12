@@ -1,0 +1,43 @@
+#todos-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 2em 4em;
+}
+
+#todos-page form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  background-color: #e9e9e9;
+  border-radius: 4px;
+  padding: 1em;
+}
+
+#todos-page ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#todos-page ul li {
+  background-color: #fff;
+  width: 500px;
+  height: 100px;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+#todos-page ul li header {
+  display: flex;
+  align-items: center;
+}
+
+#todos-page ul li header strong {
+  font-weight: 700;
+  font-size: 18px;
+  color: #333;
+  margin-left: 0.5em;
+}
