@@ -17,18 +17,16 @@ interface AuthenticatedState {
 }
 
 const Routes: React.FC = () => {
-  const { signed } = useSelector<ApplicationState, AuthenticatedState>(
-    (state) => ({
-      signed: state.auth.user ? true : false,
-    })
-  );
-
   return (
     <BrowserRouter>
       <Switch>
         <HomeRedirect exact path="/" />
-        <Route exact path="/login" component={SignIn} />
-        <PrivateRoute exact path="/todos" component={ToDoList} />
+        <Route exact path="/login">
+          <SignIn />
+        </Route>
+        <PrivateRoute exact path="/todos">
+          <ToDoList />
+        </PrivateRoute>
       </Switch>
     </BrowserRouter>
   );
@@ -37,7 +35,7 @@ const Routes: React.FC = () => {
 const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
   const { signed } = useSelector<ApplicationState, AuthenticatedState>(
     (state) => ({
-      signed: state.auth.user ? true : false,
+      signed: state.auth.user !== null ? true : false,
     })
   );
 

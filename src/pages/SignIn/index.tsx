@@ -1,21 +1,27 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { signInWithGithub } from "../../firebase";
+import { useHistory, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { ApplicationState } from "../../store";
+import { SignInFormSchema } from "../../helpers/Forms/schemas";
 import { signInRequest } from "../../store/ducks/auth/actions";
+import { User } from "../../store/ducks/auth/types";
+import { signInWithGithub } from "../../firebase";
 
 import "./styles.css";
 
-interface SignInSchema {
-  email: string;
-  password: string;
+interface AuthState {
+  user: User | null;
 }
 
 const SignIn: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [payload, setPayload] = useState<SignInSchema>({
+  const { user } = useSelector<ApplicationState, AuthState>((state) => ({
+    user: state.auth.user,
+  }));
+
+  const [payload, setPayload] = useState<SignInFormSchema>({
     email: "",
     password: "",
   });
@@ -37,6 +43,10 @@ const SignIn: React.FC = () => {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.currentTarget;
     setPayload({ ...payload, [name]: value });
+  }
+
+  if (user) {
+    return <Redirect to="/todos" />;
   }
 
   return (

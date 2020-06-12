@@ -1,7 +1,4 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import { useSelector } from "react-redux";
-import { User } from "../../store/ducks/auth/types";
-import { ApplicationState } from "../../store";
 
 import "./styles.css";
 
@@ -17,19 +14,9 @@ interface ToAddToDoState {
   description: string;
 }
 
-interface ToDoListState {
-  user: User | null;
-}
-
 type HTMLInput = HTMLInputElement & HTMLTextAreaElement;
 
 const ToDoList: React.FC = () => {
-  const { user } = useSelector<ApplicationState, ToDoListState>((state) => ({
-    user: state.auth.user,
-  }));
-
-  console.log(user);
-
   const [newTodo, setNewTodo] = useState<ToAddToDoState>({
     title: "",
     description: "",

@@ -12,7 +12,6 @@ const reducer: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
     case AuthTypes.SIGNIN_REQUEST:
       return { ...state, loading: true };
     case AuthTypes.SIGNIN_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         loading: false,
