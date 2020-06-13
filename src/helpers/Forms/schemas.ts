@@ -5,9 +5,9 @@ export interface SignInFormSchema {
 
 export interface SignUpFormSchema {
   email: string;
-  name?: string;
-  image?: string;
+  name: string;
   password?: string;
+  image?: string;
 }
 
 export interface SignInGithubSchema {

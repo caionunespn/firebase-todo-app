@@ -28,6 +28,10 @@ button {
   font-family: "Roboto", sans-serif;
 }
 
+a {
+  text-decoration: none;
+}
+
 .form-input {
   width: 100%;
   height: 45px;
@@ -39,6 +43,16 @@ button {
   color: #333;
   filter: none;
   font-size: 18px;
+}
+
+.form-input[type="checkbox"] {
+  background-color: red;
+  width: 32px;
+  height: 32px;
+}
+
+.form-input[type="checkbox"]:checked {
+  background-color: var(--background-color);
 }
 
 .form-fieldset {
@@ -82,4 +96,12 @@ button {
   color: #333;
   filter: none;
   font-size: 18px;
+}
+
+.divider {
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  margin: 1em 0;
 }

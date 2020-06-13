@@ -1,8 +1,8 @@
 import { firestore as db } from "../firebase";
 import { User } from "../store/ducks/auth/types";
-import { SignInGithubSchema } from "../helpers/Forms/schemas";
+import { SignUpFormSchema } from "../helpers/Forms/schemas";
 
-export async function checkUserRegistered(email: string) {
+export async function getUser(email: string) {
   const snapshot = await db
     .collection("users")
     .where("email", "==", email)
@@ -30,11 +30,11 @@ export async function checkUserRegistered(email: string) {
   return docs[0];
 }
 
-export async function createUser(payload: SignInGithubSchema): Promise<User> {
+export async function createUser(payload: SignUpFormSchema): Promise<User> {
   const newUser = await db.collection("users").add({
     email: payload.email,
     name: payload.name,
-    image: payload.image,
+    image: payload.image || "",
   });
 
   return {

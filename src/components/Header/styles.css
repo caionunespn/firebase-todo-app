@@ -1,0 +1,65 @@
+#app-header {
+  width: 100%;
+  height: 60px;
+  background-color: #6d4b6e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4em;
+}
+
+#app-header .dropdown-toggle {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#app-header .dropdown-toggle.active {
+  opacity: 0.7;
+}
+
+#app-header .dropdown-toggle:hover {
+  opacity: 0.7;
+}
+
+#app-header .dropdown-toggle img {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+#app-header .dropdown-toggle p {
+  color: #fff;
+  margin-left: 0.5em;
+  font-size: 18px;
+}
+
+#app-header section .dropdown {
+  display: none;
+  position: absolute;
+  width: 150px;
+  background-color: #fff;
+}
+
+#app-header section .dropdown.active {
+  display: flex;
+}
+
+#app-header section .dropdown button {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  font-size: 18px;
+  padding: 0.3em 0.5em;
+  cursor: pointer;
+  transition: 0.2s;
+  text-align: left;
+}
+
+#app-header section .dropdown button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}

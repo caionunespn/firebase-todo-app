@@ -1,13 +1,11 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ToDo } from "../../store/ducks/todos/types";
+import { addToDo, toggleToDo } from "../../store/ducks/todos/actions";
+import { ApplicationState } from "../../store";
+import MainLayout from "../../layouts/MainLayout";
 
 import "./styles.css";
-
-interface ToDo {
-  id: number;
-  title: string;
-  description: string;
-  checked: boolean;
-}
 
 interface ToAddToDoState {
   title: string;
@@ -17,31 +15,16 @@ interface ToAddToDoState {
 type HTMLInput = HTMLInputElement & HTMLTextAreaElement;
 
 const ToDoList: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const todos = useSelector<ApplicationState, ToDo[]>(
+    (state) => state.todos.data
+  );
+
   const [newTodo, setNewTodo] = useState<ToAddToDoState>({
     title: "",
     description: "",
   });
-
-  const [todos, setTodos] = useState<ToDo[]>([
-    {
-      id: 1,
-      title: "Todo 1",
-      description: "Descrição do primeiro todo",
-      checked: true,
-    },
-    {
-      id: 2,
-      title: "Todo 2",
-      description: "Descrição do segundo todo",
-      checked: false,
-    },
-    {
-      id: 3,
-      title: "Todo 3",
-      description: "Descrição do terceiro todo",
-      checked: true,
-    },
-  ]);
 
   function handleAddNewTodo(event: FormEvent) {
     event.preventDefault();
@@ -53,7 +36,7 @@ const ToDoList: React.FC = () => {
       checked: false,
     };
 
-    setTodos([...todos, toAddToDo]);
+    dispatch(addToDo(toAddToDo));
     setNewTodo({
       title: "",
       description: "",
@@ -65,58 +48,64 @@ const ToDoList: React.FC = () => {
     setNewTodo({ ...newTodo, [name]: value });
   }
 
+  function handleToggleToDo(id: number) {
+    dispatch(toggleToDo(id));
+  }
+
   return (
-    <div id="todos-page">
-      <form onSubmit={handleAddNewTodo}>
-        <fieldset className="form-fieldset">
-          <label className="form-label" htmlFor="title">
-            Título
-          </label>
-          <input
-            className="form-input"
-            name="title"
-            id="title"
-            type="text"
-            placeholder="Digite seu novo ToDo"
-            value={newTodo.title}
-            onChange={handleChange}
-            required
-          />
-        </fieldset>
-        <fieldset className="form-fieldset">
-          <label className="form-label" htmlFor="description">
-            Descrição
-          </label>
-          <textarea
-            className="form-textarea"
-            name="description"
-            id="description"
-            placeholder="Digite a descrição do seu novo ToDo"
-            value={newTodo.description}
-            onChange={handleChange}
-            required
-          />
-        </fieldset>
-        <button className="form-button" type="submit">
-          Adicionar
-        </button>
-      </form>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
-            <header>
-              <input
-                type="checkbox"
-                checked={todo.checked}
-                onChange={() => {}}
-              />
-              <strong>{todo.title}</strong>
-            </header>
-            <p>{todo.description}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <MainLayout>
+      <div id="todos-page">
+        <form onSubmit={handleAddNewTodo}>
+          <fieldset className="form-fieldset">
+            <label className="form-label" htmlFor="title">
+              Título
+            </label>
+            <input
+              className="form-input"
+              name="title"
+              id="title"
+              type="text"
+              placeholder="Digite seu novo ToDo"
+              value={newTodo.title}
+              onChange={handleChange}
+              required
+            />
+          </fieldset>
+          <fieldset className="form-fieldset">
+            <label className="form-label" htmlFor="description">
+              Descrição
+            </label>
+            <textarea
+              className="form-textarea"
+              name="description"
+              id="description"
+              placeholder="Digite a descrição do seu novo ToDo"
+              value={newTodo.description}
+              onChange={handleChange}
+              required
+            />
+          </fieldset>
+          <button className="form-button" type="submit">
+            Adicionar
+          </button>
+        </form>
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id}>
+              <header>
+                <input
+                  type="checkbox"
+                  checked={todo.checked}
+                  onChange={() => handleToggleToDo(todo.id)}
+                />
+                <strong>{todo.title}</strong>
+              </header>
+              <p>{todo.description}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </MainLayout>
   );
 };
 

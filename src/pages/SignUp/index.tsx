@@ -1,9 +1,11 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import { useHistory, Redirect, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { FiArrowLeftCircle } from "react-icons/fi";
+import Checkbox from "../../components/Checkbox";
 import { ApplicationState } from "../../store";
-import { SignInFormSchema } from "../../helpers/Forms/schemas";
-import { signInRequest, signInGithub } from "../../store/ducks/auth/actions";
+import { SignUpFormSchema } from "../../helpers/Forms/schemas";
+import { signUpRequest } from "../../store/ducks/auth/actions";
 import { User } from "../../store/ducks/auth/types";
 
 import "./styles.css";
@@ -12,28 +14,24 @@ interface AuthState {
   user: User | null;
 }
 
-const SignIn: React.FC = () => {
-  const history = useHistory();
+const SignUp: React.FC = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector<ApplicationState, AuthState>((state) => ({
     user: state.auth.user,
   }));
 
-  const [payload, setPayload] = useState<SignInFormSchema>({
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [payload, setPayload] = useState<SignUpFormSchema>({
     email: "",
+    name: "",
     password: "",
   });
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    dispatch(signInRequest(payload));
-    return history.push("/todos");
-  }
-
-  async function handleSignInGithub() {
-    dispatch(signInGithub());
-    return history.push("/todos");
+    dispatch(signUpRequest(payload));
   }
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -46,12 +44,30 @@ const SignIn: React.FC = () => {
   }
 
   return (
-    <div id="signin-page">
+    <div id="signup-page">
       <section className="header">
-        <strong>Logue na sua conta</strong>
+        <Link to="/login">
+          <FiArrowLeftCircle size={24} color="#fff" />
+        </Link>
+        <strong>Cadastre-se</strong>
       </section>
       <div className="form-container">
         <form onSubmit={handleSubmit}>
+          <fieldset className="form-fieldset">
+            <label className="form-label" htmlFor="name">
+              Nome
+            </label>
+            <br />
+            <input
+              className="form-input"
+              name="name"
+              id="name"
+              type="text"
+              value={payload.name}
+              onChange={handleChange}
+              required
+            />
+          </fieldset>
           <fieldset className="form-fieldset">
             <label className="form-label" htmlFor="email">
               E-mail
@@ -76,29 +92,24 @@ const SignIn: React.FC = () => {
               className="form-input"
               name="password"
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={payload.password}
               onChange={handleChange}
               required
             />
           </fieldset>
+          <Checkbox
+            label={"Mostrar senha"}
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
           <button className="form-button" type="submit">
-            Entrar
+            Cadastrar
           </button>
-          <p>Ainda não têm conta?</p>
-          <Link to="/cadastro">Cadastre-se</Link>
         </form>
-        <hr className="divider" />
-        <button
-          className="form-button"
-          id="github"
-          onClick={handleSignInGithub}
-        >
-          Entrar com Github
-        </button>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default SignUp;

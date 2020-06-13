@@ -28,6 +28,7 @@
   height: 100px;
   padding: 1em;
   margin-bottom: 1em;
+  border-radius: 4px;
 }
 
 #todos-page ul li header {
@@ -40,4 +41,16 @@
   font-size: 18px;
   color: #333;
   margin-left: 0.5em;
+}
+
+@media (max-width: 1200px) {
+  #todos-page {
+    flex-direction: column;
+  }
+
+  #todos-page form,
+  #todos-page ul,
+  #todos-page ul li {
+    width: 100%;
+  }
 }
