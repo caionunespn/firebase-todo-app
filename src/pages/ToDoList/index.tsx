@@ -1,7 +1,8 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToDo } from "../../store/ducks/todos/types";
-import { addToDo, toggleToDo } from "../../store/ducks/todos/actions";
+import { User } from "../../store/ducks/auth/types";
+import { addToDoRequest, toggleToDo } from "../../store/ducks/todos/actions";
 import { ApplicationState } from "../../store";
 import MainLayout from "../../layouts/MainLayout";
 
@@ -12,13 +13,21 @@ interface ToAddToDoState {
   description: string;
 }
 
+interface StateProps {
+  todos: ToDo[];
+  user: User | null;
+}
+
 type HTMLInput = HTMLInputElement & HTMLTextAreaElement;
 
 const ToDoList: React.FC = () => {
   const dispatch = useDispatch();
 
-  const todos = useSelector<ApplicationState, ToDo[]>(
-    (state) => state.todos.data
+  const { todos, user } = useSelector<ApplicationState, StateProps>(
+    (state) => ({
+      todos: state.todos.data,
+      user: state.auth.user,
+    })
   );
 
   const [newTodo, setNewTodo] = useState<ToAddToDoState>({
@@ -30,13 +39,13 @@ const ToDoList: React.FC = () => {
     event.preventDefault();
 
     const toAddToDo = {
-      id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
       title: newTodo.title,
       description: newTodo.description,
       checked: false,
+      user: user?.id || "",
     };
 
-    dispatch(addToDo(toAddToDo));
+    dispatch(addToDoRequest(toAddToDo));
     setNewTodo({
       title: "",
       description: "",
@@ -48,7 +57,7 @@ const ToDoList: React.FC = () => {
     setNewTodo({ ...newTodo, [name]: value });
   }
 
-  function handleToggleToDo(id: number) {
+  function handleToggleToDo(id: string) {
     dispatch(toggleToDo(id));
   }
 

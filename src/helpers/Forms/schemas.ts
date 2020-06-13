@@ -15,3 +15,10 @@ export interface SignInGithubSchema {
   name?: string;
   image?: string;
 }
+
+export interface ToDoFormSchema {
+  title: string;
+  description: string;
+  checked: boolean;
+  user: string;
+}

@@ -9,7 +9,9 @@ import {
   RouteProps,
 } from "react-router-dom";
 import { getUser } from "../services/auth.service";
+import { getUserToDos } from "../services/todos.service";
 import { signInSuccess } from "../store/ducks/auth/actions";
+import { getTodos } from "../store/ducks/todos/actions";
 import { auth } from "../firebase";
 
 import SignIn from "../pages/SignIn";
@@ -27,9 +29,10 @@ const Routes: React.FC = () => {
 
   async function getUserInfo(email: string) {
     const userInfo = await getUser(email);
-
     if (userInfo) {
+      const userToDos = await getUserToDos(userInfo?.id);
       dispatch(signInSuccess(userInfo));
+      dispatch(getTodos(userToDos));
       setLoading(false);
     }
   }
